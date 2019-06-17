@@ -14,7 +14,7 @@ $(document).ready(() => {
         [0, 4, 8],
         [2, 4, 6],
     ]
-
+    inputArray = ['', '', '', '', '', '', '', '', '']
     // Function to check if the board space is empty
     function emptySpace(space) {
         if ($(`#${space} `).html() == "") {
@@ -35,16 +35,19 @@ $(document).ready(() => {
     }
     function checkWin() {
         let winner = false
-        winningCombos.forEach(function (e) {
-            if (boxes[e[0]].innerhtml == currentPlayer &&
-                boxes[e[1]].innerhtml == currentPlayer &&
-                boxes[e[2]].innerhtml == currentPlayer) {
+        winningCombos.forEach(function (boxIndex) {
+            if (boxes[boxIndex[0]].innerHTML == currentPlayer &&
+                boxes[boxIndex[1]].innerHTML == currentPlayer &&
+                boxes[boxIndex[2]].innerHTML == currentPlayer) {
                 winner = true
             }
-            return winner
         })
+        return winner
     }
+    let checkTie = 0
     let boxes = $('.box');
+
+
     // Select the board and add event listener
     $("#board").on("click", ".box", event => {
         // Capture the event.target
@@ -52,11 +55,13 @@ $(document).ready(() => {
         // Perform check to see if space is empty
         if (emptySpace(boxIndex)) {
             // Set html to X or O
-            $(`#${boxIndex} `).html(currentPlayer);
+            $(`#${boxIndex}`).html(currentPlayer);
+            checkTie++
             // Change to next player
             if (checkWin()) {
+                winner = true
                 alert('You have won the game!')
-            } else if (!boxes === " ") {
+            } else if (checkTie == '9') {
                 alert('Draw game!')
             } else {
                 changePlayer();
@@ -66,7 +71,5 @@ $(document).ready(() => {
             alert("This space has already been chosen!");
         }
     });
-    console.log(boxes)
-
 
 });
